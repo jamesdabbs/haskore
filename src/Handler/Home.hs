@@ -15,44 +15,13 @@ import qualified Data.Text as T
 import Text.Julius (RawJS (..))
 import Yesod.Form.Bootstrap3 (BootstrapFormLayout (..), renderBootstrap3)
 
-default (T.Text)
+default (Int, T.Text)
 
 -- Define our data that will be used for creating the form.
 data FileForm = FileForm
     { fileInfo :: FileInfo
     , fileDescription :: Text
     }
-
-getAllBoards :: DB [Entity Board]
-getAllBoards = select $
-    from $ \board -> do
-    return board
-
-postsForBoard :: BoardId -> DB [(Entity Post, Maybe (Entity User))]
-postsForBoard id = select $
-  from $ \(post `LeftOuterJoin` author) -> do
-  on $ post ^. PostAuthorId ==. author ?. UserId
-  where_ $ post ^. PostBoardId ==. val id
-  return (post, author)
-
-getBoardsR :: Handler Html
-getBoardsR = do
-    let message = "from the controller"
-    boards <- runDB getAllBoards
-    defaultLayout $ do
-        setTitle "Boards"
-        $(widgetFile "boards")
-
-getBoardR :: BoardId -> Handler Html
-getBoardR id = do
-    board <- runDB $ get404 id
-    posts <- runDB $ postsForBoard id
-    defaultLayout $ do
-        setTitle $ toHtml $ boardTitle board
-        $(widgetFile "board")
-
-getPostR :: PostId -> Handler Html
-getPostR = undefined
 
 -- This is a handler function for the GET request method on the HomeR
 -- resource pattern. All of your resource patterns are defined in
@@ -112,3 +81,19 @@ sampleForm = renderBootstrap3 BootstrapBasicForm $ FileForm
 
 commentIds :: (Text, Text, Text)
 commentIds = ("js-commentForm", "js-createCommentTextarea", "js-commentList")
+
+-- Boards
+
+-- Board.all
+getAllBoards :: DB [Entity Board]
+getAllBoards = select $
+  from $ \boards -> do
+  return boards
+
+-- boards#index
+getBoardsR :: Handler Html
+getBoardsR = do
+    boards <- runDB getAllBoards
+    defaultLayout $ do
+        setTitle "All Boards"
+        $(widgetFile "boards")

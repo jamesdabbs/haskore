@@ -1,6 +1,14 @@
-<h1>Hello #{message}
-<ul>
-  $forall (Entity boardId board) <- boards
-    <li>
-      <a href=@{BoardR boardId}>
-        #{boardTitle board}
+<h1>#{length boards} Boards
+
+<table.table.table-striped>
+  <thead>
+    <tr>
+      <th>Id
+      <th>Title
+  $forall (Entity id board) <- boards
+    <tr>
+      <th>
+        <a href=@{BoardsR}> 
+          #{fromSqlKey id}
+      <th>#{boardTitle board}
+  
