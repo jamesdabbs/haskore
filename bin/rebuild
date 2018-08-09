@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# This is a dumb workaround for the fact that new versions of stack
+# don't rebuild on template changes
+echo "" >> src/Application.hs

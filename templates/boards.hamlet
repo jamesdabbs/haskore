@@ -1,0 +1,6 @@
+<h1>Hello #{message}
+<ul>
+  $forall (Entity boardId board) <- boards
+    <li>
+      <a href=@{BoardR boardId}>
+        #{boardTitle board}
