@@ -13,4 +13,5 @@
 
 /profile ProfileR GET
 
-/boards BoardsR GET
+/boards           BoardsR GET
+/boards/#BoardId  BoardR  GET

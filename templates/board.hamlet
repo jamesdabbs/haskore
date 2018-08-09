@@ -1,0 +1,12 @@
+<h1>#{boardTitle board}
+
+<ul>
+  $forall (Entity id post, meu) <- posts
+    <li>
+      #{postTitle post} 
+      - 
+      $maybe (Entity _ author) <- meu
+        #{userIdent author}
+      $nothing
+        Anonymous
+  

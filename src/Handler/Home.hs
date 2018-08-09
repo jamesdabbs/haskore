@@ -97,3 +97,17 @@ getBoardsR = do
     defaultLayout $ do
         setTitle "All Boards"
         $(widgetFile "boards")
+
+getPostsForBoard :: BoardId -> DB [(Entity Post, Maybe (Entity User))]
+getPostsForBoard boardId = select $
+  from $ \(posts `LeftOuterJoin` user) -> do
+  on $ posts ^. PostAuthorId ==. user ?. UserId
+  where_ $ posts ^. PostBoardId ==. val boardId
+  return (posts, user)
+
+getBoardR :: BoardId -> Handler Html
+getBoardR id = do
+    board <- runDB $ get404 id
+    posts <- runDB $ getPostsForBoard id
+    defaultLayout $ do
+        $(widgetFile "board")

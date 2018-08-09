@@ -19,3 +19,9 @@ Comment json -- Adding "json" causes ToJSON and FromJSON instances to be derived
 
 Board
   title Text
+
+Post
+  authorId UserId Maybe
+  boardId BoardId
+  title Text
+  body Text
